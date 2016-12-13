@@ -3,7 +3,7 @@
   "version": 1,
   "actions": [
 
-    "// export everything"
+    "// export everything",
     {
       "type": "export",
       "src": "src/emailer.py",
