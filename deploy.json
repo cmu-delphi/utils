@@ -18,6 +18,11 @@
       "type": "export",
       "src": "src/epiweek.py",
       "add-header-comment": true
+    },
+    {
+      "type": "export",
+      "src": "src/state_info.py",
+      "add-header-comment": true
     }
 
   ]
