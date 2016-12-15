@@ -10,6 +10,8 @@ A program used for sending emails through Automation.
 === Changelog ===
 =================
 
+2016-12-14
+  + more secrets
 2016-12-12
   + use secrets
   * checking in existing version
@@ -51,7 +53,7 @@ def queue_email(to, subject, text, cc=None, bcc=None, html=None, attachments=Non
   #Connect, queue, commit, and disconnect
   cnx = _connect()
   cur = cnx.cursor()
-  cur.execute("INSERT INTO email_queue (`from`, `to`, `subject`, `body`) VALUES ('delphi@epicast.net','%s','%s','%s')"%(to, subject, body))
+  cur.execute("INSERT INTO email_queue (`from`, `to`, `subject`, `body`) VALUES ('%s','%s','%s','%s')"%(secrets.flucontest.email_epicast, to, subject, body))
   cnx.commit()
   cur.close()
   cnx.close()
