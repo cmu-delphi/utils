@@ -6,11 +6,6 @@
     "// export everything",
     {
       "type": "export",
-      "src": "src/emailer.py",
-      "add-header-comment": true
-    },
-    {
-      "type": "export",
       "src": "src/epidate.py",
       "add-header-comment": true
     },
