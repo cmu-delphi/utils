@@ -7,10 +7,10 @@ extraction.
 
 Typical usage:
 ````
-from Extractor import extract
+from extractor import Extractor
 
 filename, destdir = 'somefile.tgz', 'some/dest/str'
-extract(filename, destdir)
+Extractor.extract(filename, destdir)
 ````
 """
 
