@@ -4,21 +4,10 @@
   "actions": [
 
     "// export everything",
-    {
-      "type": "export",
-      "src": "src/epidate.py",
-      "add-header-comment": true
-    },
-    {
-      "type": "export",
-      "src": "src/epiweek.py",
-      "add-header-comment": true
-    },
-    {
-      "type": "export",
-      "src": "src/state_info.py",
-      "add-header-comment": true
-    }
+    {"type": "export", "add-header-comment": true, "src": "src/epidate.py" },
+    {"type": "export", "add-header-comment": true, "src": "src/epiweek.py" },
+    {"type": "export", "add-header-comment": true, "src": "src/state_info.py" },
+    {"type": "export", "add-header-comment": true, "src": "src/extractor.py" }
 
   ]
 }
