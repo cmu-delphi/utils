@@ -22,14 +22,15 @@ inconsistent, and scraped ILI is not necessarily trustworthy.
   + initial version
 """
 
-
-# built-in
+# standard library
 import argparse
-# external
-# local
-from delphi_epidata import Epidata
-from neldermead import NelderMead
-import secrets
+
+# third party
+from undefx.undef_analysis.neldermead import NelderMead
+
+# first party
+from delphi.epidata.client.delphi_epidata import Epidata
+import delphi.operations.secrets
 
 
 class StateInfo:

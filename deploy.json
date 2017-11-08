@@ -3,11 +3,14 @@
   "version": 1,
   "actions": [
 
-    "// export everything",
-    {"type": "export", "add-header-comment": true, "src": "src/epidate.py" },
-    {"type": "export", "add-header-comment": true, "src": "src/epiweek.py" },
-    {"type": "export", "add-header-comment": true, "src": "src/state_info.py" },
-    {"type": "export", "add-header-comment": true, "src": "src/extractor.py" }
+    "// create python package",
+    {
+      "type": "move",
+      "src": "src/",
+      "dst": "../delphi/utils/",
+      "match": "^.*\\.py$",
+      "add-header-comment": true
+    }
 
   ]
 }
