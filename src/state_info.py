@@ -30,7 +30,7 @@ from undefx.undef_analysis.neldermead import NelderMead
 
 # first party
 from delphi.epidata.client.delphi_epidata import Epidata
-import delphi.operations.secrets
+import delphi.operations.secrets as secrets
 
 
 class StateInfo:
