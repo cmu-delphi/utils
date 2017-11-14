@@ -31,20 +31,20 @@ class FunctionTests(unittest.TestCase):
   )
 
   def test_split_epiweek(self):
-    for (ew, yr, wk) in BasicTests.sample_weeks:
+    for (ew, yr, wk) in FunctionTests.sample_weeks:
       with self.subTest(ew=ew):
         a, b = split_epiweek(ew)
         self.assertEqual(yr, a)
         self.assertEqual(wk, b)
 
   def test_join_epiweek(self):
-    for (ew, yr, wk) in BasicTests.sample_weeks:
+    for (ew, yr, wk) in FunctionTests.sample_weeks:
       with self.subTest(ew=ew):
         x = join_epiweek(yr, wk)
         self.assertEqual(ew, x)
 
   def test_check_epiweek(self):
-    for (ew, yr, wk) in BasicTests.sample_weeks:
+    for (ew, yr, wk) in FunctionTests.sample_weeks:
       with self.subTest(ew=ew):
         self.assertTrue(check_epiweek(ew))
     with self.assertRaises(Exception):
@@ -61,7 +61,7 @@ class FunctionTests(unittest.TestCase):
         self.assertEqual(get_num_weeks(year), num_weeks)
 
   def test_add_epiweeks(self):
-    for ew1, delta, ew2 in BasicTests.sample_ranges:
+    for ew1, delta, ew2 in FunctionTests.sample_ranges:
       with self.subTest(ew1=ew1, delta=delta, ew2=ew2):
         self.assertEqual(add_epiweeks(ew1, delta), ew2)
 
@@ -89,7 +89,7 @@ class FunctionTests(unittest.TestCase):
     self.assertEqual(b, y)
 
   def test_delta_epiweeks(self):
-    for ew1, delta, ew2 in BasicTests.sample_ranges:
+    for ew1, delta, ew2 in FunctionTests.sample_ranges:
       with self.subTest(ew1=ew1, delta=delta, ew2=ew2):
         self.assertEqual(delta_epiweeks(ew1, ew2), delta)
 
