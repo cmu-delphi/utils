@@ -121,7 +121,7 @@ def range_epiweeks(start, stop=None, inclusive=False, num=None):
   if num is None:
     num = delta_epiweeks(start, stop)
     if inclusive:
-      if stop >= stop:
+      if stop >= start:
         num += 1
       else:
         num -= 1
