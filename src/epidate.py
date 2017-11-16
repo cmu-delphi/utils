@@ -18,6 +18,9 @@ https://github.com/cmu-delphi/www-epivis/blob/master/site/js/epivis.js
 # standard library
 import datetime
 
+# first party
+from delphi.utils.epiweek import get_num_weeks
+
 
 class EpiDate:
 
@@ -84,22 +87,15 @@ class EpiDate:
     return self.add_days(num * 7)
 
   def add_months(self, num):
-    y, m = self.year, self.month
-    sign = 1 if num >= 0 else -1
-    num *= sign
-    yy, mm = num // 12, num % 12
-    y += sign * yy
-    m += sign * mm
-    if m > 12:
-      m -= 12
-      y += 1
-    if m < 1:
-      m += 12
-      y -= 1
-    return EpiDate(y, m, self.day)
+    m = self.year * 12 + (self.month - 1) + num
+    year = m // 12
+    month = (m % 12) + 1
+    leap_day = 1 if month == 2 and EpiDate._is_leap_year(year) else 0
+    max_day = EpiDate.DAYS_PER_MONTH[month - 1] + leap_day
+    return EpiDate(year, month, min(self.day, max_day))
 
   def add_years(self, num):
-    return EpiDate(self.year + num, self.month, self.day);
+    return self.add_months(num * 12)
 
   def __str__(self):
     return '%04d-%02d-%02d'%(self.year, self.month, self.day)
@@ -150,11 +146,9 @@ class EpiDate:
 
   @staticmethod
   def from_epiweek(year, week):
-    date = EpiDate(year, 6, 1)
-    while date.get_ew_year() < year:
-      date = date.add_years(+1)
-    while date.get_ew_year() > year:
-      date = date.add_years(-1)
+    if year < 1 or week < 1 or week > get_num_weeks(year):
+      raise Exception('invalid year or week')
+    date = EpiDate(year, 7, 1)
     while date.get_ew_week() < week:
       date = date.add_weeks(+1)
     while date.get_ew_week() > week:
