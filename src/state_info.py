@@ -3,34 +3,21 @@
 === Purpose ===
 ===============
 
-Best effort imputed state ILI. Uses all known information (regional wILI,
-known state ILI, and scraped state ILI) to estimate ILI in each state. An
-objective function penalizes deviations from known (and to a lesser extent)
-scraped (w)ILI, and NelderMead is used to optimize ILI in all states to
-minimize the total penalty. This is necessary because reported (w)ILI is often
-inconsistent, and scraped ILI is not necessarily trustworthy.
+Contains static data for US regions and states.
 
 
 =================
 === Changelog ===
 =================
 
+2017-12-21
+  - removed imputation (see impute_missing_values.py)
 2016-11-15
   * use secrets
   * epidata API update
 2016-04-06
   + initial version
 """
-
-# standard library
-import argparse
-
-# third party
-from undefx.undef_analysis.neldermead import NelderMead
-
-# first party
-from delphi.epidata.client.delphi_epidata import Epidata
-import delphi.operations.secrets as secrets
 
 
 class StateInfo:
@@ -124,87 +111,3 @@ class StateInfo:
     self.within = within
     self.weight = weight
     self.state_regions = state_regions
-
-  def get_ili(self, ew):
-    si = self
-    regions = si.nat + si.hhs + si.cen[1:]
-    all_locs = regions + si.sta
-    rows = Epidata.check(Epidata.ilinet(all_locs, ew, auth=secrets.api.ilinet))
-    get_row = lambda l: ([r for r in rows if r['location'] == l] + [None])[0]
-    rows = [get_row(loc) for loc in all_locs]
-    rows = [r for r in rows if r is not None and r['ili'] is not None]
-    state_idx = {}
-    values = []
-    for (i, s) in enumerate(si.sta):
-      state_idx[s] = i
-      values.append(0)
-    for r in rows:
-      loc = r['location']
-      if loc in regions:
-        for s in si.within[loc]:
-          if values[state_idx[s]] == 0:
-            values[state_idx[s]] = r['wili']
-          else:
-            values[state_idx[s]] = (values[state_idx[s]] + r['wili']) / 2
-    for r in rows:
-      loc = r['location']
-      if loc not in regions:
-        values[state_idx[loc]] = r['ili']
-    def objective(params):
-      values = params
-      if min(values) < 0:
-        return 1e9
-      total_penalty = 0
-      for r in rows:
-        loc = r['location']
-        if loc not in state_idx:
-          x, y, sd = 0, r['wili'], 1
-          for s in si.within[loc]:
-            x += si.weight[loc][s] * values[state_idx[s]]
-          pen = ((x - y) / sd) ** 2
-          total_penalty += pen
-          #print('sum to region wILI', loc, y, '~', x, '=', pen)
-          for s in si.within[loc]:
-            x, y, sd = values[state_idx[s]], r['wili'], 10
-            for o in si.within[loc]:
-              if s == o:
-                continue
-              w = si.weight[loc][o]
-              y = (y - w * values[state_idx[o]]) / (1 - w)
-            pen = ((x - y) / sd) ** 2
-            total_penalty += pen
-            #print('match region wILI', loc, y, '~', x, '=', pen)
-        else:
-          if r['num_ili'] is not None:
-            sd = 1
-          else:
-            sd = 5
-          x, y = values[state_idx[loc]], r['ili']
-          pen = ((x - y) / sd) ** 2
-          total_penalty += pen
-          #print('match state ILI', loc, y, '~', x, '=', pen)
-      return total_penalty
-    solver = NelderMead(objective, limit_iterations=3000, limit_value=0.001, limit_time=10)
-    simplex = solver.get_simplex(len(values), values, 0.1)
-    best = solver.run(simplex)
-    #print('num evaluations:', Point.get_num_evaluations())
-    #print('best:', best)
-    result = {}
-    for (i, s) in enumerate(si.sta):
-      result[s] = best._location[i]
-    return result
-
-
-if __name__ == '__main__':
-  # args and usage
-  parser = argparse.ArgumentParser()
-  parser.add_argument('epiweek', type=int, help='epiweek')
-  args = parser.parse_args()
-
-  si = StateInfo()
-  result = si.get_ili(args.epiweek)
-  for state in si.sta:
-    ili = result[state]
-    if not (0 <= ili < 25):
-      raise Exception('ILI for %s is %+.3f?' % (state, ili))
-    print('%s %.3f' % (state, ili))
