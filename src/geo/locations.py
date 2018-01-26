@@ -94,4 +94,8 @@ class Locations:
   atoms = {a: [a] for a in atom_list}
 
   # a single dictionary of all known locations
-  regions = {**nat, **hhs, **cen, **atoms}
+  regions = {}
+  regions.update(nat)
+  regions.update(hhs)
+  regions.update(cen)
+  regions.update(atoms)
