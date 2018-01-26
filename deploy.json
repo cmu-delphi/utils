@@ -11,6 +11,13 @@
       "match": "^.*\\.py$",
       "add-header-comment": true
     },
+    {
+      "type": "move",
+      "src": "src/geo/",
+      "dst": "../delphi/utils/geo/",
+      "match": "^.*\\.py$",
+      "add-header-comment": true
+    },
 
     "// run unit and coverage tests",
     {"type": "py3test"}

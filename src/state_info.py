@@ -5,6 +5,9 @@
 
 Contains static data for US regions and states.
 
+This file is likely to be deprecated; new code should use geo/locations.py and
+geo/populations.py instead.
+
 
 =================
 === Changelog ===
