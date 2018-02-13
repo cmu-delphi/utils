@@ -8,6 +8,10 @@ although CDC publishes detailed ILINet data, they don't publish the population
 values used in computing wILI. Rather than using population estimates, we use
 the (relative) population weights imputed from the data.
 
+This file should be updated annually on or after data has been released for
+epiweek 44 (i.e. Friday of epiweek 45, whicih is typically the second week of
+November).
+
 
 ===================
 === Methodology ===
@@ -221,18 +225,38 @@ population_weights = {
 }
 
 
-def get_population_weight(season, location):
+def get_population_weight(location, season=None):
   """
-  Return the weight of the given location relative to the US nationally during
-  the given season.
+  Return the population weight of the given location, relative to the US
+  nationally.
 
-  `season` is defined as the year containing epiweek 40. For example, the 2017
-  season spans 2017w40--2018w39.
+  inputs:
+    location: A FluView location, which is case-sensitive and is expected to be
+      lower case. The locations available generally represent the finest
+      geographic resolution available for FluView data; namely, states,
+      territories, and cities (aka "atoms"). Regional weights are not
+      precomputed here because they differ by epiweek, depending on which
+      locations are reporting (i.e. whether num_providers is nonzero).
+    season (optional): The year containing epiweek 40. For example, the 2017
+      season spans 2017w40--2018w39. By default, the most recent data is used.
 
-  `location` is case-sensitive and is expected to be lower case. The locations
-  available generally represent the finest geographic resolution available for
-  FluView data; namely, states, territories, and cities (aka "atoms"). Regional
-  weights are not precomputed here because they differ by epiweek, depending on
-  which locations are reporting (i.e. whether num_providers is nonzero).
+  output:
+    - the fraction of the US population contained within the given location
   """
+  if not season:
+    season = max(population_weights)
   return population_weights[season][location]
+
+
+def get_population(location, season=None):
+  """
+  Return the approximate population of the given location. The returned value
+  is rounded to the nearest integer and is based on the assumption that the US
+  population is a fixed 325 million.
+
+  inputs: see `get_population_weight`
+
+  output:
+    - the approimate population of the given location
+  """
+  return round(get_population_weight(location, season) * 3.25e8)

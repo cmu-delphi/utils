@@ -46,7 +46,7 @@ exceptions.
 class Locations:
   """Encodes the hierarchy of US political divisions."""
 
-  # atomic regions for FluView data
+  # atomic regions for FluView data (regions containing only themselves)
   atom_list = [
     # entire states
     'ak', 'al', 'ar', 'az', 'ca', 'co', 'ct', 'de', 'fl', 'ga', 'hi', 'ia',
@@ -61,41 +61,48 @@ class Locations:
     # cities
     'jfk',
   ]
+  atom_map = {a: [a] for a in atom_list}
 
   # national, HHS, and Census regions in terms of atoms
-  nat = {
-    'nat': atom_list,
-  }
-  hhs = {
-    'hhs1': ['ct', 'ma', 'me', 'nh', 'ri', 'vt'],
-    'hhs2': ['jfk', 'nj', 'ny', 'pr', 'vi'],
-    'hhs3': ['dc', 'de', 'md', 'pa', 'va', 'wv'],
-    'hhs4': ['al', 'fl', 'ga', 'ky', 'ms', 'nc', 'sc', 'tn'],
-    'hhs5': ['il', 'in', 'mi', 'mn', 'oh', 'wi'],
-    'hhs6': ['ar', 'la', 'nm', 'ok', 'tx'],
-    'hhs7': ['ia', 'ks', 'mo', 'ne'],
-    'hhs8': ['co', 'mt', 'nd', 'sd', 'ut', 'wy'],
-    'hhs9': ['az', 'ca', 'hi', 'nv'],
-    'hhs10': ['ak', 'id', 'or', 'wa'],
-  }
-  cen = {
-    'cen1': ['ct', 'ma', 'me', 'nh', 'ri', 'vt'],
-    'cen2': ['jfk', 'nj', 'ny', 'pa', 'pr', 'vi'],
-    'cen3': ['il', 'in', 'mi', 'oh', 'wi'],
-    'cen4': ['ia', 'ks', 'mn', 'mo', 'nd', 'ne', 'sd'],
-    'cen5': ['dc', 'de', 'fl', 'ga', 'md', 'nc', 'sc', 'va', 'wv'],
-    'cen6': ['al', 'ky', 'ms', 'tn'],
-    'cen7': ['ar', 'la', 'ok', 'tx'],
-    'cen8': ['az', 'co', 'id', 'mt', 'nm', 'nv', 'ut', 'wy'],
-    'cen9': ['ak', 'ca', 'hi', 'or', 'wa'],
-  }
+  nat_list = ['nat']
+  nat_map = dict(zip(nat_list, [atom_list]))
 
-  # atomic locations as regions containing only themselves
-  atoms = {a: [a] for a in atom_list}
+  hhs_list = ['hhs%d' % i for i in range(1, 11)]
+  hhs_map = dict(zip(hhs_list, [
+    ['ct', 'ma', 'me', 'nh', 'ri', 'vt'],
+    ['jfk', 'nj', 'ny', 'pr', 'vi'],
+    ['dc', 'de', 'md', 'pa', 'va', 'wv'],
+    ['al', 'fl', 'ga', 'ky', 'ms', 'nc', 'sc', 'tn'],
+    ['il', 'in', 'mi', 'mn', 'oh', 'wi'],
+    ['ar', 'la', 'nm', 'ok', 'tx'],
+    ['ia', 'ks', 'mo', 'ne'],
+    ['co', 'mt', 'nd', 'sd', 'ut', 'wy'],
+    ['az', 'ca', 'hi', 'nv'],
+    ['ak', 'id', 'or', 'wa'],
+  ]))
 
-  # a single dictionary of all known locations
-  regions = {}
-  regions.update(nat)
-  regions.update(hhs)
-  regions.update(cen)
-  regions.update(atoms)
+  cen_list = ['cen%d' % i for i in range(1, 10)]
+  cen_map = dict(zip(cen_list, [
+    ['ct', 'ma', 'me', 'nh', 'ri', 'vt'],
+    ['jfk', 'nj', 'ny', 'pa', 'pr', 'vi'],
+    ['il', 'in', 'mi', 'oh', 'wi'],
+    ['ia', 'ks', 'mn', 'mo', 'nd', 'ne', 'sd'],
+    ['dc', 'de', 'fl', 'ga', 'md', 'nc', 'sc', 'va', 'wv'],
+    ['al', 'ky', 'ms', 'tn'],
+    ['ar', 'la', 'ok', 'tx'],
+    ['az', 'co', 'id', 'mt', 'nm', 'nv', 'ut', 'wy'],
+    ['ak', 'ca', 'hi', 'or', 'wa'],
+  ]))
+
+  # New York state combines the "ny" fragment with the "jfk" city
+  ny_state_list = ['ny_state']
+  ny_state_map = {ny_state_list[0]: ['jfk', 'ny']}
+
+  # collections of all known locations
+  region_list = nat_list + hhs_list + cen_list + ny_state_list + atom_list
+  region_map = {}
+  region_map.update(nat_map)
+  region_map.update(hhs_map)
+  region_map.update(cen_map)
+  region_map.update(ny_state_map)
+  region_map.update(atom_map)
