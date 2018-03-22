@@ -224,8 +224,10 @@ population_weights = {
   },
 }
 
+first_season, last_season = min(population_weights), max(population_weights)
 
-def get_population_weight(location, season=None):
+
+def get_population_weight(location, season=last_season):
   """
   Return the population weight of the given location, relative to the US
   nationally.
@@ -243,12 +245,11 @@ def get_population_weight(location, season=None):
   output:
     - the fraction of the US population contained within the given location
   """
-  if not season:
-    season = max(population_weights)
+  season = max(min(season, last_season), first_season)
   return population_weights[season][location]
 
 
-def get_population(location, season=None):
+def get_population(location, season=last_season):
   """
   Return the approximate population of the given location. The returned value
   is rounded to the nearest integer and is based on the assumption that the US

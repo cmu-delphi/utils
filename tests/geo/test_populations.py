@@ -38,6 +38,20 @@ class UnitTests(unittest.TestCase):
     val2 = get_population_weight(location)
     self.assertEqual(val1, val2)
 
+  def test_season_clamped_to_first(self):
+    location = 'nc'
+    season = min(population_weights)
+    val1 = get_population_weight(location, season)
+    val2 = get_population_weight(location, season - 1)
+    self.assertEqual(val1, val2)
+
+  def test_season_clamped_to_last(self):
+    location = 'sc'
+    season = max(population_weights)
+    val1 = get_population_weight(location, season)
+    val2 = get_population_weight(location, season + 1)
+    self.assertEqual(val1, val2)
+
   def test_population_is_integer(self):
     pop = get_population('vi')
     self.assertTrue(isinstance(pop, int))
