@@ -55,7 +55,7 @@ class Locations:
     'pa', 'ri', 'sc', 'sd', 'tn', 'tx', 'ut', 'va', 'vt', 'wa', 'wi', 'wv',
     'wy',
     # state fragments
-    'ny',
+    'ny_minus_jfk',
     # territories
     'dc', 'pr', 'vi',
     # cities
@@ -70,7 +70,7 @@ class Locations:
   hhs_list = ['hhs%d' % i for i in range(1, 11)]
   hhs_map = dict(zip(hhs_list, [
     ['ct', 'ma', 'me', 'nh', 'ri', 'vt'],
-    ['jfk', 'nj', 'ny', 'pr', 'vi'],
+    ['jfk', 'nj', 'ny_minus_jfk', 'pr', 'vi'],
     ['dc', 'de', 'md', 'pa', 'va', 'wv'],
     ['al', 'fl', 'ga', 'ky', 'ms', 'nc', 'sc', 'tn'],
     ['il', 'in', 'mi', 'mn', 'oh', 'wi'],
@@ -84,7 +84,7 @@ class Locations:
   cen_list = ['cen%d' % i for i in range(1, 10)]
   cen_map = dict(zip(cen_list, [
     ['ct', 'ma', 'me', 'nh', 'ri', 'vt'],
-    ['jfk', 'nj', 'ny', 'pa', 'pr', 'vi'],
+    ['jfk', 'nj', 'ny_minus_jfk', 'pa', 'pr', 'vi'],
     ['il', 'in', 'mi', 'oh', 'wi'],
     ['ia', 'ks', 'mn', 'mo', 'nd', 'ne', 'sd'],
     ['dc', 'de', 'fl', 'ga', 'md', 'nc', 'sc', 'va', 'wv'],
@@ -94,9 +94,9 @@ class Locations:
     ['ak', 'ca', 'hi', 'or', 'wa'],
   ]))
 
-  # New York state combines the "ny" fragment with the "jfk" city
-  ny_state_list = ['ny_state']
-  ny_state_map = {ny_state_list[0]: ['jfk', 'ny']}
+  # New York state combines the "ny_minus_jfk" fragment with the "jfk" city
+  ny_state_list = ['ny']
+  ny_state_map = {ny_state_list[0]: ['jfk', 'ny_minus_jfk']}
 
   # collections of all known locations
   region_list = nat_list + hhs_list + cen_list + ny_state_list + atom_list
