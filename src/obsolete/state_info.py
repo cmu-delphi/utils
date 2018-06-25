@@ -1,12 +1,17 @@
 """
+==================
+=== Deprecated ===
+==================
+
+As of 2018-06-25, this file is no longer used. New code should use
+geo/locations.py and geo/populations.py instead.
+
+
 ===============
 === Purpose ===
 ===============
 
 Contains static data for US regions and states.
-
-This file is likely to be deprecated; new code should use geo/locations.py and
-geo/populations.py instead.
 
 
 =================
