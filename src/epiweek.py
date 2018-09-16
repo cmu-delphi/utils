@@ -35,7 +35,7 @@ def join_epiweek(year, week):
   return year * 100 + week
 
 
-def check_epiweek(*epiweeks, fatal=True):
+def check_epiweek(fatal=True, *epiweeks):
   """ return True if the epiweek is valid, otherwise raise Exception """
   for epiweek in epiweeks:
     year, week = split_epiweek(epiweek)
